@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean class="com.simple.spring.simplerpc.ClientFactoryBean">
+        <property name="zkConn" value="127.0.0.1:2181"/>
+        <property name="serviceName" value="test"/>
+        <property name="serviceInterface" value="com.simple.rpc.example.IHello"/>
+    </bean>
+
+    <!--// 服务端发布-->
+   <!-- // xml配置方式-->
+    <bean class="com.simple.spring.simplerpc.ServerFactoryBean" init-method="start">
+        <property name="serviceInterface" value="com.simple.rpc.example.IHello"/>
+        <property name="port" value="8888"/>
+        <property name="serviceName" value="fyes-counter"/>
+        <property name="serviceImpl" ref="helloImpl"/>
+        <property name="zkConn" value="127.0.0.1:2181"/>
+    </bean>
+    <bean id="helloImpl" class="com.simple.rpc.example.HelloImpl"></bean>
+</beans>
