@@ -103,20 +103,16 @@ public class ClientImpl extends Client {
                     LOGGER.info("Server {} list change {}", serviceName, newServiceData);
 
                     //关闭删除本地缓存中多出的channel
-                    for (ChannelWrapper wrapper : channelWrappers) {
+                    channelWrappers.stream()
+                            .filter(wrapper -> !newServiceData.contains(wrapper.getConnStr()))
+                            .forEach(wrapper -> {
 
-                        String connStr = wrapper.getConnStr();
+                                wrapper.close();
 
-                        if (!newServiceData.contains(connStr)) {
+                                LOGGER.info("Remove channel {}", wrapper.getConnStr());
 
-                            wrapper.close();
-
-                            LOGGER.info("Remove channel {}", connStr);
-
-                            channelWrappers.remove(wrapper);
-                        }
-
-                    }
+                                channelWrappers.remove(wrapper);
+                            });
 
 
                     for (String connStr : newServiceData) {
