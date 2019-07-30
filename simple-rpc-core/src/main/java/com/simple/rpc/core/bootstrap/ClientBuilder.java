@@ -52,4 +52,5 @@ public class ClientBuilder<T> {
         client.init();
         return client.proxyInterface(serviceInterface);
     }
+    
 }
